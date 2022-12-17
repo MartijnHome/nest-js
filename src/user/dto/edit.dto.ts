@@ -1,4 +1,6 @@
-import { IsEmail, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
+import * as argon from 'argon2';
 
 export class EditDto {
   @IsEmail()
@@ -12,4 +14,10 @@ export class EditDto {
   @IsString()
   @IsOptional()
   lastName?: string;
+}
+
+export class EditPasswordDto {
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 }

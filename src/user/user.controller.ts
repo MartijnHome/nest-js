@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Patch, Req, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
-import { EditDto } from './dto';
+import { EditDto, EditPasswordDto } from './dto';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('user')
@@ -22,6 +22,12 @@ export class UserController {
   edit(@Param('id', ParseIntPipe) id: number,
        @Body() dto: EditDto) {
     return this.userService.edit(id, dto);
+  }
+
+  @Patch('change-password/:id')
+  changePassword(@Param('id', ParseIntPipe) id: number,
+       @Body() dto: EditPasswordDto) {
+    return this.userService.changePassword(id, dto);
   }
 
   @Get('delete/:id')
