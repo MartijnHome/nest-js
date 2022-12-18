@@ -3,38 +3,53 @@
 ### Usage
 This project has no front-end built-in. I used Insomnia to communicate with the server. Scroll down for more information about Insomnia.
 ### Routes
-<b>/auth/signup</b>
 
-Allows a user to register. Required parameters are: email, password, firstName and lastName.
-An optional parameter is isAdmin.
+<ul>
+    <li>
+        <b>/auth/signup</b>
+        <p>Allows a user to register. Required parameters are: email, password, firstName and lastName.
+        <p>An optional parameter is isAdmin.</p>
+        <br>
+    </li>
+    <li>
+    <b>/auth/signin</b>
+        <p>Allows a user to signin. This route returns a bearer token for authentication.
+        See <a href="http://www.passportjs.org/packages/passport-jwt/">Passport JWT</a>.</p>
+        <p>This token must be set in the request headers to allow users to access the remaining routes.</p>
+        <br>    
+    </li>
+    <li>
+        <b>/user/index</b>
+        <p>Returns a list with all users.</p>
+        <br>
+    </li>
+    <li>
+        <b>/user/show/{id}</b>
+        <p>Retrieves information about a specific user.</p>
+        <br>
+    </li>
+    <li>
+        <b>/user/edit/{id}</b>
+        <p>Allows a user to change his firstname, lastname and/or email.</p>
+        <p>Only admins are allowed to edit different users.</p>
+        <br>
+    </li>
+    <li>
+        <b>/user/change-password</b>
+        <p>Allows a user to change his or hers password. Required paremeters are: oldPassword and newPassword.</p>
+        <p>Admins cannot change other users passwords.</p>
+        <br>
+    </li>
+    <li>
+        <b>/user/delete/{id}</b>
+        <p>Only admins are allowed to delete a specified user.</p>
+    </li>
+</ul>
 
-<b>/auth/signin</b>
 
-Allows a user to signin. This route returns a bearer token for authentication. See <a href="http://www.passportjs.org/packages/passport-jwt/">Passport JWT</a>.
 
-This token must be set in the request headers to allow users to access the remaining routes.
 
-<b>/user/index</b>
 
-Returns a list with all users.
-
-<b>/user/show/{id}</b>
-
-Retrieves information about a specific user.
-
-<b>/user/edit/{id}</b>
-
-Allows a user to change his firstname, lastname and/or email. Only admins are allowed to edit different users.
-
-<b>/user/change-password</b>
-
-Allows a user to change his or hers password. Required paremeters are: oldPassword and newPassword.
-
-Admins cannot change other users passwords.
-
-<b>/user/delete/{id}</b>
-
-Only admins are allowed to delete a specified user.
 ## Setup / installation instructions
 ### Nest.js
 This project relies on Nest.js for the backend. For instructions please scroll down.
