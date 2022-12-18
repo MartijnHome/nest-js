@@ -95,22 +95,20 @@ export class UserService {
     return target;
   }
 
-  async changePassword(userId: number, targetId: number, dto: ChangePasswordDto) {
+  async changePassword(id: number, dto: ChangePasswordDto) {
     const user = await this.prisma.user.findUnique({
       where: {
-        id: userId
-      }
+        id: id,
+      },
     });
 
-    if (!user.isAdmin && userId !== targetId)
-      throw new ForbiddenException(
-        'Access to resources denied',
-      );
+    if (!(await argon.verify(user.hash, dto.oldPassword)))
+      throw new ForbiddenException('Credentials incorrect');
 
-    const hash = await argon.hash(dto.password);
+    const hash = await argon.hash(dto.newPassword);
     const target = await this.prisma.user.update({
       where: {
-        id: targetId,
+        id: id,
       },
       data: {
         hash: hash,
@@ -128,7 +126,7 @@ export class UserService {
       }
     });
 
-    if (!user.isAdmin && userId !== targetId)
+    if (!user.isAdmin)
       throw new ForbiddenException(
         'Access to resources denied',
       );

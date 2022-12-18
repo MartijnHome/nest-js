@@ -1,3 +1,74 @@
+# Nest.js backend assignment
+## Brief explanation
+### Usage
+This project has no front-end built-in. I used Insomnia to communicate with the server. Scroll down for more information about Insomnia.
+### Routes
+<b>/auth/signup</b>
+
+Allows a user to register. Required parameters are: email, password, firstName and lastName.
+An optional parameter is isAdmin.
+
+<b>/auth/signin</b>
+
+Allows a user to signin. This route returns a bearer token for authentication. See <a href="http://www.passportjs.org/packages/passport-jwt/">Passport JWT</a>.
+
+This token must be set in the request headers to allow users to access the remaining routes.
+
+<b>/user/index</b>
+
+Returns a list with all users.
+
+<b>/user/show/{id}</b>
+
+Retrieves information about a specific user.
+
+<b>/user/edit/{id}</b>
+
+Allows a user to change his firstname, lastname and/or email. Only admins are allowed to edit different users.
+
+<b>/user/change-password</b>
+
+Allows a user to change his or hers password. Required paremeters are: oldPassword and newPassword.
+
+Admins cannot change other users passwords.
+
+<b>/user/delete/{id}</b>
+
+Only admins are allowed to delete a specified user.
+## Setup / installation instructions
+### Nest.js
+This project relies on Nest.js for the backend. For instructions please scroll down.
+
+### Database - MariaDB / MySQL
+Nest.js is configured to use MariaDB with these settings:
+<ul>
+    <li>
+        User: root
+    </li>
+    <li>
+        Password: foobar
+    </li>
+    <li>
+        Url: 127.0.0.1
+    </li>
+    <li>
+        Port: 3306
+    </li>
+    <li>
+        DB name: nestjs
+    </li>
+</ul>
+
+Adjust these settings suitable for your needs inside the .env file.
+
+### Database driver
+For this project I used Prisma. For more information please go to their <a href="https://www.prisma.io/">website</a>
+
+## Insomnia
+This project was made using API client Insomnia. Please go to their website for instructions:
+<a href="https://insomnia.rest/">Insomnia website</a>
+
+## Nest.js instructions
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>

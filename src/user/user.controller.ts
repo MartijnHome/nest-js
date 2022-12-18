@@ -28,13 +28,12 @@ export class UserController {
     return this.userService.edit(userId, targetId, dto);
   }
 
-  @Patch('change-password/:id')
+  @Patch('change-password')
   changePassword(
-    @Param('id', ParseIntPipe) targetId: number,
-    @GetUser('id') userId: number,
+    @GetUser('id') id: number,
     @Body() dto: ChangePasswordDto
   ) {
-    return this.userService.changePassword(userId, targetId, dto);
+    return this.userService.changePassword(id, dto);
   }
 
   @Get('delete/:id')
