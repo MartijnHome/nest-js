@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { ChangePasswordDto, EditUserDto } from './dto';
@@ -70,53 +70,86 @@ export class UserService {
     return user;
   }
 
-  async edit(id: number, dto: EditUserDto) {
-    const user = await this.prisma.user.update({
+  async edit(userId: number, targetId: number, dto: EditUserDto) {
+    const user = await this.prisma.user.findUnique({
       where: {
-        id: id,
+        id: userId
+      }
+    });
+
+    if (!user.isAdmin && userId !== targetId)
+      throw new ForbiddenException(
+        'Access to resources denied',
+      );
+
+    const target = await this.prisma.user.update({
+      where: {
+        id: targetId,
       },
       data: {
         ...dto,
       },
     });
 
-    delete user.hash;
-    return user;
+    delete target.hash;
+    return target;
   }
 
-  async changePassword(id: number, dto: ChangePasswordDto) {
-    const hash = await argon.hash(dto.password);
-    const user = await this.prisma.user.update({
+  async changePassword(userId: number, targetId: number, dto: ChangePasswordDto) {
+    const user = await this.prisma.user.findUnique({
       where: {
-        id: id,
+        id: userId
+      }
+    });
+
+    if (!user.isAdmin && userId !== targetId)
+      throw new ForbiddenException(
+        'Access to resources denied',
+      );
+
+    const hash = await argon.hash(dto.password);
+    const target = await this.prisma.user.update({
+      where: {
+        id: targetId,
       },
       data: {
         hash: hash,
       },
     });
 
-    delete user.hash;
-    return user;
+    delete target.hash;
+    return target;
   }
 
-  async delete(id: number) {
+  async delete(userId: number, targetId: number) {
     const user = await this.prisma.user.findUnique({
       where: {
-        id: id
+        id: userId
       }
     });
 
-    if (!user)
-      return new NotFoundException('User with id ' + id + ' not found');
+    if (!user.isAdmin && userId !== targetId)
+      throw new ForbiddenException(
+        'Access to resources denied',
+      );
+
+    const target = await this.prisma.user.findUnique({
+      where: {
+        id: targetId
+      }
+    });
+
+    if (!target)
+      return new NotFoundException('User with id ' + targetId + ' not found');
 
     await this.prisma.user.delete({
       where: {
-        id: id
+        id: targetId
       }
     });
 
     return {
-      msg: 'User with id ' + id + ' successfully deleted'
+      msg: 'User with id ' + targetId + ' successfully deleted'
     };
   }
 }

@@ -21,28 +21,27 @@ export class UserController {
 
   @Patch('edit/:id')
   edit(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe) targetId: number,
+    @GetUser('id') userId: number,
     @Body() dto: EditUserDto,
   ) {
-    return this.userService.edit(id, dto);
-  }
-
-  @Patch('edit')
-  editSelf(
-    @GetUser('id') id: number,
-    @Body() dto: EditUserDto,
-  ) {
-    return this.userService.edit(id, dto);
+    return this.userService.edit(userId, targetId, dto);
   }
 
   @Patch('change-password/:id')
-  changePassword(@Param('id', ParseIntPipe) id: number,
-       @Body() dto: ChangePasswordDto) {
-    return this.userService.changePassword(id, dto);
+  changePassword(
+    @Param('id', ParseIntPipe) targetId: number,
+    @GetUser('id') userId: number,
+    @Body() dto: ChangePasswordDto
+  ) {
+    return this.userService.changePassword(userId, targetId, dto);
   }
 
   @Get('delete/:id')
-  delete(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.delete(id);
+  delete(
+    @Param('id', ParseIntPipe) targetId: number,
+    @GetUser('id') userId: number
+  ) {
+    return this.userService.delete(userId, targetId);
   }
 }

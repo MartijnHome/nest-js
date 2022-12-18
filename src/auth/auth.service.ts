@@ -24,6 +24,7 @@ export class AuthService {
           hash: hash,
           firstName: dto.firstName,
           lastName: dto.lastName,
+          isAdmin: dto.isAdmin,
         },
       });
       delete user.hash;
