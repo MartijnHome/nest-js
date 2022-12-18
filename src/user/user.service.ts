@@ -1,7 +1,7 @@
-import { Get, Injectable, NotFoundException, Param } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { User, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { EditDto, EditPasswordDto } from './dto';
+import { EditUserDto, ChangePasswordDto } from './dto';
 import * as argon from 'argon2';
 
 @Injectable()
@@ -70,7 +70,7 @@ export class UserService {
     return user;
   }
 
-  async edit(id: number, dto: EditDto) {
+  async edit(id: number, dto: EditUserDto) {
     const user = await this.prisma.user.update({
       where: {
         id: id,
@@ -84,7 +84,7 @@ export class UserService {
     return user;
   }
 
-  async changePassword(id: number, dto: EditPasswordDto) {
+  async changePassword(id: number, dto: ChangePasswordDto) {
     const hash = await argon.hash(dto.password);
     const user = await this.prisma.user.update({
       where: {
